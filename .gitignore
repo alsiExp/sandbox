@@ -1,3 +1,16 @@
+#Intelij
+
+.idea
+.idea_modules
+idea.bat
+out
+target
+*.iml
+atlassian-ide-plugin.xml
+log
+
+# default java
+
 *.class
 
 # Mobile Tools for Java (J2ME)
