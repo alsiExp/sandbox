@@ -9,5 +9,7 @@ public interface TopicDao {
 
     List<Topic> getAll();
 
+    List<Topic> getAllWithMessages();
+
 
 }

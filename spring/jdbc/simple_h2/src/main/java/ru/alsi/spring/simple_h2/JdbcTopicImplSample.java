@@ -16,10 +16,11 @@ public class JdbcTopicImplSample {
         System.out.println(dao.findTopicNameById(1L));
         System.out.println(dao.findTopicNameByIdNamed(2L));
 
-        ArrayList<Topic> arr = new ArrayList<>(dao.getAll());
+        ArrayList<Topic> arr = new ArrayList<>(dao.getAllWithMessages());
         for(Topic t: arr) {
             System.out.println(t.toString());
         }
+
 
 
     }

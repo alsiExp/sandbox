@@ -3,7 +3,9 @@ package ru.alsi.spring.simple_h2;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
@@ -14,6 +16,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +57,7 @@ public class JdbcTopicDaoImpl implements TopicDao, InitializingBean {
         });
     }
 
+
     /*
     without lambda, like inner class (set TopicMapper second parameter in npjt.query
 
@@ -71,13 +75,50 @@ public class JdbcTopicDaoImpl implements TopicDao, InitializingBean {
 
     */
 
+    @Override
+    public List<Topic> getAllWithMessages() {
+        String sql = "SELECT t.id, t.name, t.creation_time, m.id as message_id, m.topic_id, m.content, m.creation_time " +
+                "from topics t left join messages m on t.id = m.topic_id";
+
+        return npjt.query(sql, (ResultSet resultSet) -> {
+                    Map<Long, Topic> map = new HashMap<>();
+                    Topic topic = null;
+
+                    while (resultSet.next()) {
+                        Long id = resultSet.getLong("id");
+                        topic = map.get(id);
+
+                        if (topic == null) {
+                            topic = new Topic();
+                            topic.setId(id);
+                            topic.setName(resultSet.getString("name"));
+                            topic.setCreationTime(resultSet.getTimestamp("creation_time").toLocalDateTime());
+                            topic.setMessageList(new ArrayList<Message>());
+                            map.put(id, topic);
+                        }
+                        Long messageId = resultSet.getLong("message_id");
+                        if (messageId > 0) {
+                            Message message = new Message();
+                            message.setId(messageId);
+                            message.setTopic_id(resultSet.getLong("topic_id"));
+                            message.setContent(resultSet.getString("content"));
+                            message.setCreationTime(resultSet.getTimestamp("creation_time").toLocalDateTime());
+                            topic.getMessageList().add(message);
+                        }
+                    }
+
+                    return new ArrayList<Topic>(map.values());
+                }
+        );
+    }
+
 
 
     @Override
     public String findTopicNameById(Long topicId) {
         return jdbcTemplate.queryForObject(
                 "SELECT name from TOPICS WHERE id = ?",
-                new Object[] {topicId}, String.class
+                new Object[]{topicId}, String.class
         );
     }
 
