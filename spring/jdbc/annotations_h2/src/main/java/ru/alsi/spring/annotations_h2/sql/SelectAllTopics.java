@@ -1,6 +1,7 @@
-package ru.alsi.spring.annotations_h2;
+package ru.alsi.spring.annotations_h2.sql;
 
 import org.springframework.jdbc.object.MappingSqlQuery;
+import ru.alsi.spring.annotations_h2.Topic;
 
 
 import javax.sql.DataSource;

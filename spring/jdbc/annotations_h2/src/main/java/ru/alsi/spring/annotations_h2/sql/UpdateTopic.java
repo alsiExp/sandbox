@@ -1,4 +1,4 @@
-package ru.alsi.spring.annotations_h2;
+package ru.alsi.spring.annotations_h2.sql;
 
 import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.object.SqlUpdate;

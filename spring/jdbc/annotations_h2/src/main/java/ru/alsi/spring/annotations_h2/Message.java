@@ -12,6 +12,11 @@ public class Message {
     public Message() {
     }
 
+    public Message(String content, LocalDateTime creationTime) {
+        this.content = content;
+        this.creationTime = creationTime;
+    }
+
     public Long getId() {
         return id;
     }

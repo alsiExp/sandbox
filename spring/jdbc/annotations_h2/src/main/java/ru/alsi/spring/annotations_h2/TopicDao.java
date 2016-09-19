@@ -10,13 +10,13 @@ public interface TopicDao {
 
     String findTopicNameById(Long topicId);
 
-//    List<Topic> getAllWithMessages();
+    List<Topic> getAllWithMessages();
 
     void insert(Topic topic);
 
     void update(Topic topic);
 
-//    void insertWithMessages(Topic topic);
+    void insertWithMessages(Topic topic);
 
 
 

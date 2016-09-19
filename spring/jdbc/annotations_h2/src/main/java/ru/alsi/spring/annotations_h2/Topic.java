@@ -9,6 +9,15 @@ public class Topic {
     private LocalDateTime creationTime;
     private List<Message> messageList;
 
+    public Topic() {
+    }
+
+    public Topic(String name, LocalDateTime creationTime, List<Message> messageList) {
+        this.name = name;
+        this.creationTime = creationTime;
+        this.messageList = messageList;
+    }
+
     public Long getId() {
         return id;
     }

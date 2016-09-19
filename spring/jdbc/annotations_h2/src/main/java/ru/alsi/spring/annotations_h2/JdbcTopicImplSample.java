@@ -5,6 +5,7 @@ import org.springframework.context.support.GenericXmlApplicationContext;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class JdbcTopicImplSample {
 
@@ -25,7 +26,18 @@ public class JdbcTopicImplSample {
         t.setCreationTime(LocalDateTime.now());
         dao.update(t);
 
-        ArrayList<Topic> arr = new ArrayList<>(dao.getAll());
+        Topic t2 = new Topic();
+        t2.setName("New inserted Topic");
+        t2.setCreationTime(LocalDateTime.now());
+        dao.insert(t2);
+
+        Topic t3 = new Topic("New topic with messages", LocalDateTime.now(), new ArrayList<>(Arrays.asList(
+                new Message("Content #1", LocalDateTime.now()),
+                new Message("Content #2", LocalDateTime.now())
+        )));
+        dao.insertWithMessages(t3);
+
+        ArrayList<Topic> arr = new ArrayList<>(dao.getAllWithMessages());
         for(Topic topic: arr) {
             System.out.println(topic.toString());
         }
